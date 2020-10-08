@@ -66,7 +66,11 @@ class AdminPlus extends PluginAbstract
    */
   public static function jwplayer()
   {
-
+    $enabled = Settings::get('adminplus_jwplayer_enabled');
+    $source = Settings::get('adminplus_jwplayer_source');
+    if ($enabled) {
+      echo '<script src="' . $source . '"></script>';
+    }
   }
 
   /**
@@ -93,11 +97,17 @@ class AdminPlus extends PluginAbstract
 
       if ($is_valid_form) {
 
+        // Handle checkbox for default gated setting
+        if (isset($_POST['adminplus_gated_default'])) {
+          $data['adminplus_gated_default'] = 1;
+        } else {
+          $data['adminplus_gated_default'] = 0;
+        }
+
         // Handle checkbox for default private setting
         if (isset($_POST['adminplus_private_default'])) {
-          $data['adminplus_private_default'] = $_POST['adminplus_private_default'];
+          $data['adminplus_private_default'] = 1;
         } else {
-
           $data['adminplus_private_default'] = 0;
         }
 
@@ -105,8 +115,10 @@ class AdminPlus extends PluginAbstract
         // have checked the box to enable jwplayer
         if (isset($_POST['adminplus_jwplayer_enabled']) && $_POST['adminplus_jwplayer_enabled'] == 1) {
           if (!empty($_POST['adminplus_jwplayer_source'])) {
+            $data['adminplus_jwplayer_enabled'] = 1;
             $data['adminplus_jwplayer_source'] = trim($_POST['adminplus_jwplayer_source']);
           } else {
+            $data['adminplus_jwplayer_enabled'] = 0;
             $errors['adminplus_jwplayer_source'] = 'If enabling JWPlayer, source/url cannot be empty.';
           }
         }
