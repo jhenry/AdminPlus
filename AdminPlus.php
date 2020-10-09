@@ -47,10 +47,10 @@ class AdminPlus extends PluginAbstract
   public function uninstall()
   {
     Settings::remove('adminplus_private_default');
-    Settings::set('adminplus_gated_default');
-    Settings::set('adminplus_jwplayer_enabled');
-    Settings::set('adminplus_jwplayer_source');
-    Settings::set('adminplus_jwplayer_key');
+    Settings::remove('adminplus_gated_default');
+    Settings::remove('adminplus_jwplayer_enabled');
+    Settings::remove('adminplus_jwplayer_source');
+    Settings::remove('adminplus_jwplayer_key');
   }
 
   /**
