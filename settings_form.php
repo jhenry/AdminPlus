@@ -32,6 +32,44 @@
         <input class="form-control" id="jwplayer_key" type="text" name="adminplus_jwplayer_key" value="<?= $data['adminplus_jwplayer_key'] ?>" />
     </div>
 
+    <h2 class="mt-3">Add a Text/Language Item</h2>
+    <p>Create a new text item that can be used in a theme. It can be edited in the settings under <a href="<?= BASE_URL ?>/cc-admin/languages.php">Appearance -> Languages</a>.</p>  
+    <div class="form-group <?= (isset($errors['language_label'])) ? 'has-error' : '' ?>">
+        <label class="control-label" for="language-label">Label (text/underscores only): </label>
+        <input class="form-control" id="language-label" type="text" name="language_label" placeholder="accessibility_notice" value="" />
+    </div>
+    <div class="form-group <?=(isset ($errors['language_text'])) ? 'has-error' : ''?>">
+      <label for="language-text">Text to display: </label>
+      <textarea class="form-control" id="language-text" name="language_text" placeholder="Some text to be inserted regarding accessibility.... " style="width: 75%;" rows="6"></textarea>
+    </div>
+
+    <?php 
+     // Retrieve custom language entries
+     $activeLanguage = Settings::get('default_language');
+     $textService = new TextService();
+     $customEntries = $textService->getLanguageEntries($activeLanguage);
+    ?>
+     <?php if (sizeof($customEntries) > 0): ?>
+    <h4 class="mt-3">Existing Custom Text Items</h3>
+    <p>This is a list of the current text items that have either been created here, or edited to be different from the default.  </p>  
+    <table class="table">
+    <thead>
+        <tr>
+        <th scope="col">Label</th>
+        <th scope="col">Text</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($customEntries as $entry): ?>
+        <tr>
+        <th scope="row"><?= $entry->name ?></th>
+        <td><?= $entry->content ?></td>
+        </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    <?php endif; ?>
+<br>
     <input type="hidden" value="yes" name="submitted" />
     <input type="hidden" name="nonce" value="<?= $formNonce ?>" />
     <input type="submit" class="button" value="Update Settings" />

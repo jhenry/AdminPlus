@@ -126,6 +126,22 @@ class AdminPlus extends PluginAbstract
 
         $data['adminplus_jwplayer_key'] = trim($_POST['adminplus_jwplayer_key']);
 
+        // Create Text Item
+        if (isset($_POST['language_label'])) 
+        {
+          $languageLabel = $_POST['language_label']; 
+          $languageContent = $_POST['language_text'] ?? ''; 
+          $activeLanguage = Settings::get('default_language');
+          $textMapper = new TextMapper();
+          $text = new \Text();
+          $text->type = 'language';
+          $text->language = $activeLanguage;
+          $text->name = $languageLabel;
+          $text->content = $languageContent;
+          $textMapper->save($text);
+
+        } 
+
       } else {
         $errors['session'] = 'Expired or invalid session';
       }
