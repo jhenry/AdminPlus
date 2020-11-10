@@ -63,7 +63,7 @@
         <?php foreach ($customEntries as $entry): ?>
         <tr>
         <th scope="row"><?= $entry->name ?></th>
-        <td><?= $entry->content ?></td>
+        <td><?= htmlentities($entry->content) ?></td>
         </tr>
         <?php endforeach; ?>
         </tbody>
