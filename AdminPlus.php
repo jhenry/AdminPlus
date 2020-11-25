@@ -59,6 +59,7 @@ class AdminPlus extends PluginAbstract
   public function load()
   {
     Plugin::attachEvent('theme.head', array(__CLASS__, 'jwplayer'));
+    Plugin::attachFilter('library_add.upload.path', array(__CLASS__, 'setAdminFileLibraryPath'));
   }
 
   /**
@@ -70,6 +71,21 @@ class AdminPlus extends PluginAbstract
     $source = Settings::get('adminplus_jwplayer_source');
     if ($enabled) {
       echo '<script src="' . $source . '"></script>';
+    }
+  }
+
+  /**
+   * Use dist/default upload path for files uploaded to Admin -> File Library
+   */
+  public static function setAdminFileLibraryPath($default_path)
+  {
+    if (class_exists('Wowza')) {
+      $upload_path = DOC_ROOT . '/cc-content/uploads';
+      return $upload_path;
+    }
+    else 
+    {
+      return $default_path;
     }
   }
 
