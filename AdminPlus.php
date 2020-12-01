@@ -60,6 +60,7 @@ class AdminPlus extends PluginAbstract
   {
     Plugin::attachEvent('theme.head', array(__CLASS__, 'jwplayer'));
     Plugin::attachFilter('library_add.upload.path', array(__CLASS__, 'setAdminFileLibraryPath'));
+    Plugin::attachFilter ('router.static_routes' , array( __CLASS__ , 'privateUrlRoute' ) );
   }
 
   /**
@@ -88,6 +89,22 @@ class AdminPlus extends PluginAbstract
       return $default_path;
     }
   }
+
+  /**
+   * Allow private urls in embed route
+   */
+  public static function privateUrlRoute($routes)
+  {
+    $routes['embed'] = new Route(array(
+            'path' => 'embed/([a-z0-9]+)',
+            'location' => DOC_ROOT . '/cc-core/controllers/embed.php',
+            'mappings' => array('vid'),
+            'type' => Route::AGNOSTIC,
+            'name' => 'embed'
+        ));
+    return $routes;
+  }
+  
 
   /**
    * Outputs the settings page HTML and handles form posts on the plugin's
